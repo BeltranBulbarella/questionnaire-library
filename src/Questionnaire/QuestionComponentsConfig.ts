@@ -1,16 +1,18 @@
 export interface QuestionComponentsConfig {
-    Button?: React.ComponentType<ButtonProps>;
-    Text?: React.ComponentType<TextProps>;
+    Button?: React.ComponentType<CustomButtonProps>;
+    Text?: React.ComponentType<CustomTextProps>;
 }
 
 //define the props that your library expects the components to accept
 // to allow users to customize components
 
-interface ButtonProps {
+interface CustomButtonProps {
     children: React.ReactNode;
     onClick: () => void;
+    customProps?: any;
 }
 
-interface TextProps {
+interface CustomTextProps {
     children: React.ReactNode;
+    customProps?: any;
 }

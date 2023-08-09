@@ -1,5 +1,5 @@
 {
-  "name": "questionnaire-library",
+  "name": "@sirius/questionnaire-library",
   "version": "0.1.3",
   "author": "Beltran Bulbarella beltranbulbarella@sirius.com.ar",
   "publishConfig": {

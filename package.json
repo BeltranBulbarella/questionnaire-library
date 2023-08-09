@@ -9,7 +9,7 @@
   "readme": "README.md",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
-  "private": false,
+  "private": true,
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

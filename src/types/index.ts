@@ -16,8 +16,8 @@ export interface Validation {
 export interface Question {
     type: QuestionType;
     question: string;
+    onSelected?: (answer: any) => void;
     options?: string[];
-    validation?: Validation;
 }
 
 export interface CustomComponents {

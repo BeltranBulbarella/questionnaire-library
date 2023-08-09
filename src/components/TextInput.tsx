@@ -1,24 +1,19 @@
 import React, {useState} from 'react';
-import {Validation} from "../types";
-import {handleTextInputValidation} from "../utils/validation";
+import {Question, Validation} from "../types";
 
-interface TextInputProps {
-    question: string;
+interface TextInputProps extends Question {
     validation?: Validation;
 }
 
-const TextInput: React.FC<TextInputProps> = ({question, validation}) => {
+export const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation}) => {
     const [value, setValue] = useState('');
-    const [error, setError] = useState<string | null>(null);
 
-    const handleInputChange = (e: any) => {
-        const val = e.target.value;
-        setValue(val);
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value;
+        setValue(newValue);
 
-        // If there's validation for this input, then handle it
-        if (validation) {
-            const validationError = handleTextInputValidation(val, validation);
-            setError(validationError);
+        if (onSelected) {
+            onSelected(newValue);
         }
     };
 
@@ -26,10 +21,7 @@ const TextInput: React.FC<TextInputProps> = ({question, validation}) => {
         <div>
             <label>{question}</label>
             <input type="text" value={value} onChange={handleInputChange}/>
-            {error && <span style={{color: 'red'}}>{error}</span>}
         </div>
     );
 }
-
-export default TextInput;
 

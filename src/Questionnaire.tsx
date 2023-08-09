@@ -1,14 +1,17 @@
 import React from 'react';
 import {Question, QuestionType} from './types';
-import SingleChoice from './components/SingleChoice';
-import {getCustomComponents} from "./config";
-import TextInput from "./components/TextInput";
+import {getCustomComponents, setCustomComponents} from "./config";
+import {SingleChoice} from "./components/SingleChoice";
+import {TextInput} from "./components/TextInput";
+import {MultipleChoice} from "./components/MultipleChoice";
+import {NumericInput} from "./components/NumericInput";
+import {BooleanInput} from "./components/BooleanInput";
 
 interface Props {
     questions: Question[];
 }
 
-const Questionnaire: React.FC<Props> = ({questions}) => {
+export const Questionnaire: React.FC<Props> = ({questions}) => {
     const customComponents = getCustomComponents();
 
     return (
@@ -16,12 +19,24 @@ const Questionnaire: React.FC<Props> = ({questions}) => {
             {questions.map((q, index) => {
                 switch (q.type) {
                     case QuestionType.SINGLECHOICE:
-                        const Component = customComponents.singleChoice || SingleChoice;
-                        return <Component key={index} {...q} />;
+                        const SingleChoiceComponent = customComponents.singleChoice || SingleChoice;
+                        return <SingleChoiceComponent key={index} {...q} />;
+
+                    case QuestionType.MULTIPLECHOICE:
+                        const MultipleChoiceComponent = customComponents.multipleChoice || MultipleChoice;
+                        return <MultipleChoiceComponent key={index} {...q} />;
 
                     case QuestionType.TEXTINPUT:
-                        const Component2 = customComponents.textInput || TextInput;
-                        return <Component2 key={index} {...q} />;
+                        const TextInputComponent = customComponents.textInput || TextInput;
+                        return <TextInputComponent key={index} {...q} />;
+
+                    case QuestionType.NUMERIINPUT:
+                        const NumericInputComponent = customComponents.numericInput || NumericInput;
+                        return <NumericInputComponent key={index} {...q} />;
+
+                    case QuestionType.BOOLEANINPUT:
+                        const BooleanInputComponent = customComponents.booleanInput || BooleanInput;
+                        return <BooleanInputComponent key={index} {...q} />;
 
                     default:
                         return null;
@@ -31,4 +46,5 @@ const Questionnaire: React.FC<Props> = ({questions}) => {
     );
 }
 
-export default Questionnaire;
+export {setCustomComponents, getCustomComponents};
+

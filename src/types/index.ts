@@ -6,10 +6,18 @@ export enum QuestionType {
     BOOLEANINPUT = 'BOOLEANINPUT',
 }
 
+export interface Validation {
+    minLength?: number;
+    maxLength?: number;
+    regex?: RegExp;
+    custom?: (value: any) => string | null; // If returns string, that's the error message. If null, then validation passed.
+}
+
 export interface Question {
     type: QuestionType;
     question: string;
-    options?: string[]; // For single/multiple choice
+    options?: string[];
+    validation?: Validation;
 }
 
 export interface CustomComponents {

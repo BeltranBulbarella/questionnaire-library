@@ -2,8 +2,7 @@ import React from 'react';
 import {Question, QuestionType} from './types';
 import SingleChoice from './components/SingleChoice';
 import {getCustomComponents} from "./config";
-
-// Import other default components...
+import TextInput from "./components/TextInput";
 
 interface Props {
     questions: Question[];
@@ -19,7 +18,11 @@ const Questionnaire: React.FC<Props> = ({questions}) => {
                     case QuestionType.SINGLECHOICE:
                         const Component = customComponents.singleChoice || SingleChoice;
                         return <Component key={index} {...q} />;
-                    // Implement other question types similarly...
+
+                    case QuestionType.TEXTINPUT:
+                        const Component2 = customComponents.textInput || TextInput;
+                        return <Component2 key={index} {...q} />;
+
                     default:
                         return null;
                 }

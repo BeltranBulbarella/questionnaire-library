@@ -5,7 +5,7 @@ interface SingleChoiceProps extends Question {
     options?: string[];
 }
 
-export const SingleChoice: React.FC<SingleChoiceProps> = ({question, options, onSelected}) => {
+const SingleChoice: React.FC<SingleChoiceProps> = ({question, options, onSelected}) => {
     const handleOptionClick = (option: string) => {
         if (onSelected) {
             onSelected(option);
@@ -23,6 +23,7 @@ export const SingleChoice: React.FC<SingleChoiceProps> = ({question, options, on
         </div>
     );
 }
+export default SingleChoice;
 // regex: "/{d+}",
 // minLength: 8.
 

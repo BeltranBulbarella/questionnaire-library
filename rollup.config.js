@@ -27,4 +27,5 @@ export default {
         typescript({useTsconfigDeclarationDir: true}),
         terser(),
     ],
+    external: ['react', 'react-dom'],
 };

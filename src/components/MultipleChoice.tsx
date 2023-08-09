@@ -5,7 +5,7 @@ interface MultipleChoiceProps extends Question {
     options: string[];
 }
 
-export const MultipleChoice: React.FC<MultipleChoiceProps> = ({question, options, onSelected}) => {
+const MultipleChoice: React.FC<MultipleChoiceProps> = ({question, options, onSelected}) => {
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleOptionToggle = (option: string) => {
@@ -34,3 +34,4 @@ export const MultipleChoice: React.FC<MultipleChoiceProps> = ({question, options
         </div>
     );
 }
+export default MultipleChoice;

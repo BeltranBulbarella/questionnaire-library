@@ -1,11 +1,11 @@
 import React from 'react';
 import {Question, QuestionType} from './types';
 import {getCustomComponents, setCustomComponents} from "./config";
-import {SingleChoice} from "./components/SingleChoice";
-import {TextInput} from "./components/TextInput";
-import {MultipleChoice} from "./components/MultipleChoice";
-import {NumericInput} from "./components/NumericInput";
-import {BooleanInput} from "./components/BooleanInput";
+import BooleanInput from "./components/BooleanInput";
+import SingleChoice from "./components/SingleChoice";
+import MultipleChoice from "./components/MultipleChoice";
+import TextInput from "./components/TextInput";
+import NumericInput from "./components/NumericInput";
 
 interface Props {
     questions: Question[];

@@ -3,7 +3,7 @@ import { Question } from "../types";
 
 interface NumericInputProps extends Question {}
 
-export const NumericInput: React.FC<NumericInputProps> = ({question, onSelected}) => {
+const NumericInput: React.FC<NumericInputProps> = ({question, onSelected}) => {
     const [value, setValue] = useState<number | null>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,3 +22,4 @@ export const NumericInput: React.FC<NumericInputProps> = ({question, onSelected}
         </div>
     );
 }
+export default NumericInput;

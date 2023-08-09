@@ -3,7 +3,7 @@ import { Question } from "../types";
 
 interface BooleanInputProps extends Question {}
 
-export const BooleanInput: React.FC<BooleanInputProps> = ({question, onSelected}) => {
+const BooleanInput: React.FC<BooleanInputProps> = ({question, onSelected}) => {
     return (
         <div>
             {question}
@@ -12,3 +12,5 @@ export const BooleanInput: React.FC<BooleanInputProps> = ({question, onSelected}
         </div>
     );
 }
+
+export default BooleanInput;

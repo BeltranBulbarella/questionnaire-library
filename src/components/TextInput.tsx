@@ -5,8 +5,8 @@ interface TextInputProps extends Question {
     validation?: Validation;
 }
 
-export const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation}) => {
-    const [value, setValue] = useState('');
+const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation}) => {
+    const [value, setValue] = React.useState('');
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
@@ -24,4 +24,5 @@ export const TextInput: React.FC<TextInputProps> = ({question, onSelected, valid
         </div>
     );
 }
+export default TextInput;
 

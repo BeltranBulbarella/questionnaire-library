@@ -5,10 +5,14 @@ import {DefaultButton, DefaultDiv} from "./defaultRenderers";
 
 interface SingleChoiceProps extends Question {
     options?: string[];
+    goToNext?: () => void;
+    goToPrev?: () => void;
+    renderNavButtons?: boolean;
+
 }
 
 
-const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected}) => {
+const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected, renderNavButtons, goToNext, goToPrev}) => {
     const renderers = getRenderConfig();
     const ButtonComponent = renderers.Button || DefaultButton;
     const DivComponent = renderers.Div || DefaultDiv;
@@ -24,10 +28,22 @@ const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected}) =>
         <DivComponent>
             {question}
             {options.map((option) => (
-                <ButtonComponent key={option} onClick={() => handleOptionClick(option)}>
+                <ButtonComponent
+                    key={option}
+                    onClick={() => {
+                        handleOptionClick(option);
+                        if (!renderNavButtons) goToNext && goToNext();
+                    }}
+                >
                     {option}
                 </ButtonComponent>
             ))}
+            {renderNavButtons && (
+                <>
+                    <ButtonComponent onClick={goToPrev}>Prev</ButtonComponent>
+                    <ButtonComponent onClick={goToNext}>Next</ButtonComponent>
+                </>
+            )}
         </DivComponent>
     );
 }

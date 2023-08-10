@@ -1,16 +1,28 @@
 import React, {useState} from 'react';
-import {Question, Validation} from "../types";
+import {Question} from "../types/types";
+import {getRenderConfig} from "../config";
+import {DefaultDiv, DefaultInput, DefaultLabel} from "./defaultRenderers";
+import {handleTextInputValidation, InputValidation} from "../utils/validation";
 
-interface TextInputProps extends Question {
-    validation?: Validation;
+interface TextInputProps<CustomValidations = {}> extends Question {
+    validation?: InputValidation<CustomValidations>;
 }
 
 const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation}) => {
-    const [value, setValue] = React.useState('');
+    const renderers = getRenderConfig();
+    const InputComponent = renderers.Input || DefaultInput;
+    const DivComponent = renderers.Div || DefaultDiv;
+    const LabelComponent = renderers.Label || DefaultLabel;
+
+    const [value, setValue] = useState('');
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = e.target.value;
         setValue(newValue);
+
+        const error = handleTextInputValidation(newValue, validation);
+        setErrorMessage(error);
 
         if (onSelected) {
             onSelected(newValue);
@@ -18,11 +30,14 @@ const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation})
     };
 
     return (
-        <div>
-            <label>{question}</label>
-            <input type="text" value={value} onChange={handleInputChange}/>
-        </div>
+        <DivComponent>
+            <LabelComponent>{question}</LabelComponent>
+            <InputComponent type="text" value={value} onChange={handleInputChange}/>
+            {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
+        </DivComponent>
     );
 }
+
 export default TextInput;
+
 

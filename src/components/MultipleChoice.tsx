@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { Question } from "../types";
+import React, {FC, useState} from 'react';
+import { Question } from "../types/types";
+import {getRenderConfig} from "../config";
+import {DefaultButton, DefaultDiv} from "./defaultRenderers";
 
 interface MultipleChoiceProps extends Question {
     options: string[];
 }
 
-const MultipleChoice: React.FC<MultipleChoiceProps> = ({question, options, onSelected}) => {
+const MultipleChoice: FC<MultipleChoiceProps> = ({question, options, onSelected}) => {
+    const renderers = getRenderConfig();
+    const DivComponent = renderers.Div || DefaultDiv;
+    const ButtonComponent = renderers.Button || DefaultButton;
+
     const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
     const handleOptionToggle = (option: string) => {
@@ -21,17 +27,17 @@ const MultipleChoice: React.FC<MultipleChoiceProps> = ({question, options, onSel
     };
 
     return (
-        <div>
+        <DivComponent>
             {question}
             {options.map((option) => (
-                <button
+                <ButtonComponent
                     key={option}
                     onClick={() => handleOptionToggle(option)}
                     style={{ backgroundColor: selectedOptions.includes(option) ? 'lightblue' : undefined }}>
                     {option}
-                </button>
+                </ButtonComponent>
             ))}
-        </div>
+        </DivComponent>
     );
 }
 export default MultipleChoice;

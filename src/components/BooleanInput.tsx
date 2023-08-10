@@ -1,15 +1,22 @@
-import React from 'react';
-import { Question } from "../types";
+import React, {FC} from 'react';
+import {Question} from "../types/types";
+import {getRenderConfig} from "../config";
+import {DefaultButton, DefaultDiv} from "./defaultRenderers";
 
-interface BooleanInputProps extends Question {}
+interface BooleanInputProps extends Question {
+}
 
-const BooleanInput: React.FC<BooleanInputProps> = ({question, onSelected}) => {
+const BooleanInput: FC<BooleanInputProps> = ({question, onSelected}) => {
+    const renderers = getRenderConfig();
+    const DivComponent = renderers.Div || DefaultDiv;
+    const ButtonComponent = renderers.Button || DefaultButton;
+
     return (
-        <div>
+        <DivComponent>
             {question}
-            <button onClick={() => onSelected && onSelected(true)}>True</button>
-            <button onClick={() => onSelected && onSelected(false)}>False</button>
-        </div>
+            <ButtonComponent onClick={() => onSelected && onSelected(true)}>True</ButtonComponent>
+            <ButtonComponent onClick={() => onSelected && onSelected(false)}>False</ButtonComponent>
+        </DivComponent>
     );
 }
 

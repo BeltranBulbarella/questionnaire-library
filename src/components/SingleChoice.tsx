@@ -1,11 +1,19 @@
-import React from 'react';
-import {Question} from "../types";
+import React, {FC} from 'react';
+import {Question} from "../types/types";
+import {getRenderConfig} from "../config";
+import {DefaultButton, DefaultDiv} from "./defaultRenderers";
 
 interface SingleChoiceProps extends Question {
     options?: string[];
 }
 
-const SingleChoice: React.FC<SingleChoiceProps> = ({question, options, onSelected}) => {
+
+const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected}) => {
+    const renderers = getRenderConfig();
+    const ButtonComponent = renderers.Button || DefaultButton;
+    const DivComponent = renderers.Div || DefaultDiv;
+
+
     const handleOptionClick = (option: string) => {
         if (onSelected) {
             onSelected(option);
@@ -13,14 +21,14 @@ const SingleChoice: React.FC<SingleChoiceProps> = ({question, options, onSelecte
     };
 
     return (
-        <div>
+        <DivComponent>
             {question}
             {options.map((option) => (
-                <button key={option} onClick={() => handleOptionClick(option)}>
+                <ButtonComponent key={option} onClick={() => handleOptionClick(option)}>
                     {option}
-                </button>
+                </ButtonComponent>
             ))}
-        </div>
+        </DivComponent>
     );
 }
 export default SingleChoice;

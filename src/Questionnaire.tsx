@@ -1,5 +1,5 @@
 import React from 'react';
-import {Question, QuestionType} from './types';
+import {Question, QuestionType} from './types/types';
 import {getCustomComponents, setCustomComponents} from "./config";
 import BooleanInput from "./components/BooleanInput";
 import SingleChoice from "./components/SingleChoice";

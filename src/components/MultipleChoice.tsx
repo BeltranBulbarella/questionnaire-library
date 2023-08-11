@@ -5,12 +5,9 @@ import {DefaultButton, DefaultDiv} from "./defaultRenderers";
 
 interface MultipleChoiceProps extends Question {
     options: string[];
-    goToNext?: () => void;
-    goToPrev?: () => void;
-    renderNavButtons?: boolean;
 }
 
-const MultipleChoice: FC<MultipleChoiceProps> = ({question, options, onSelected, renderNavButtons, goToNext, goToPrev}) => {
+const MultipleChoice: FC<MultipleChoiceProps> = ({question, options, onSelected}) => {
     const renderers = getRenderConfig();
     const DivComponent = renderers.Div || DefaultDiv;
     const ButtonComponent = renderers.Button || DefaultButton;
@@ -40,12 +37,6 @@ const MultipleChoice: FC<MultipleChoiceProps> = ({question, options, onSelected,
                     {option}
                 </ButtonComponent>
             ))}
-            {renderNavButtons && (
-                <>
-                    <ButtonComponent onClick={goToPrev}>Prev</ButtonComponent>
-                    <ButtonComponent onClick={goToNext}>Next</ButtonComponent>
-                </>
-            )}
         </DivComponent>
     );
 }

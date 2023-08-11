@@ -6,12 +6,9 @@ import {handleNumericInputValidation, NumericValidation} from "../utils/validati
 
 interface NumericInputProps extends Question {
     validation?: NumericValidation;
-    goToNext?: () => void;
-    goToPrev?: () => void;
-    renderNavButtons?: boolean;
 }
 
-const NumericInput: FC<NumericInputProps> = ({question, onSelected, validation, renderNavButtons, goToNext, goToPrev}) => {
+const NumericInput: FC<NumericInputProps> = ({question, onSelected, validation}) => {
     const renderers = getRenderConfig();
     const InputComponent = renderers.Input || DefaultInput;
     const DivComponent = renderers.Div || DefaultDiv;
@@ -27,7 +24,7 @@ const NumericInput: FC<NumericInputProps> = ({question, onSelected, validation, 
         setValue(newValue);
 
         const error = handleNumericInputValidation(newValue, validation);
-        setErrorMessage(error);
+        setErrorMessage(error !== null ? error : 'no error');
 
         if (onSelected) {
             onSelected(newValue);
@@ -36,16 +33,11 @@ const NumericInput: FC<NumericInputProps> = ({question, onSelected, validation, 
 
     return (
         <DivComponent>
-            <LabelComponent>{question}</LabelComponent>
+            <LabelComponent><p>{question}</p></LabelComponent>
             <InputComponent type="number" value={value ?? ''} onChange={handleInputChange}/>
             {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
-            <ButtonComponent onClick={goToNext}>Submit</ButtonComponent>
-            {renderNavButtons && (
-                <>
-                    <ButtonComponent onClick={goToPrev}>Prev</ButtonComponent>
-                    <ButtonComponent onClick={goToNext}>Next</ButtonComponent>
-                </>
-            )}
+            <ButtonComponent onClick={() => console.log('submit')}>Submit</ButtonComponent>
+
         </DivComponent>
     );
 }

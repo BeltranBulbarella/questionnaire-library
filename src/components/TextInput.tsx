@@ -6,12 +6,9 @@ import {handleTextInputValidation, InputValidation} from "../utils/validation";
 
 interface TextInputProps<CustomValidations = {}> extends Question {
     validation?: InputValidation<CustomValidations>;
-    goToNext?: () => void;
-    goToPrev?: () => void;
-    renderNavButtons?: boolean;
 }
 
-const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation, renderNavButtons, goToNext, goToPrev}) => {
+const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation}) => {
     const renderers = getRenderConfig();
     const InputComponent = renderers.Input || DefaultInput;
     const DivComponent = renderers.Div || DefaultDiv;
@@ -27,7 +24,7 @@ const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation, 
         setValue(newValue);
 
         const error = handleTextInputValidation(newValue, validation);
-        setErrorMessage(error);
+        setErrorMessage(error !== null ? error : 'no error');
 
         if (onSelected) {
             onSelected(newValue);
@@ -36,16 +33,10 @@ const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation, 
 
     return (
         <DivComponent>
-            <LabelComponent>{question}</LabelComponent>
+            <LabelComponent><p>{question}</p></LabelComponent>
             <InputComponent type="text" value={value} onChange={handleInputChange}/>
             {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
-            <ButtonComponent onClick={goToNext}>Submit</ButtonComponent>
-            {renderNavButtons && (
-                <>
-                    <ButtonComponent onClick={goToPrev}>Prev</ButtonComponent>
-                    <ButtonComponent onClick={goToNext}>Next</ButtonComponent>
-                </>
-            )}
+            <ButtonComponent onClick={() => console.log('1')}>Submit</ButtonComponent>
         </DivComponent>
     );
 }

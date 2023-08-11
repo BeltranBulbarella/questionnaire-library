@@ -1,20 +1,12 @@
 import React, {useState} from 'react';
 import {Question} from "../types/types";
-import {getRenderConfig} from "../config";
-import {DefaultButton, DefaultDiv, DefaultInput, DefaultLabel} from "./defaultRenderers";
 import {handleTextInputValidation, InputValidation} from "../utils/validation";
 
-interface TextInputProps<CustomValidations = {}> extends Question {
+export interface TextInputProps<CustomValidations = {}> extends Question {
     validation?: InputValidation<CustomValidations>;
 }
 
 const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation}) => {
-    const renderers = getRenderConfig();
-    const InputComponent = renderers.Input || DefaultInput;
-    const DivComponent = renderers.Div || DefaultDiv;
-    const LabelComponent = renderers.Label || DefaultLabel;
-    const ButtonComponent = renderers.Button || DefaultButton;
-
 
     const [value, setValue] = useState('');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -24,7 +16,7 @@ const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation})
         setValue(newValue);
 
         const error = handleTextInputValidation(newValue, validation);
-        setErrorMessage(error !== null ? error : 'no error');
+        setErrorMessage(error);
 
         if (onSelected) {
             onSelected(newValue);
@@ -32,12 +24,12 @@ const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation})
     };
 
     return (
-        <DivComponent>
-            <LabelComponent><p>{question}</p></LabelComponent>
-            <InputComponent type="text" value={value} onChange={handleInputChange}/>
+        <div>
+            <label><p>{question}</p></label>
+            <input type="text" value={value} onChange={handleInputChange}/>
+            <button onClick={() => console.log('1')}>Submit</button>
             {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
-            <ButtonComponent onClick={() => console.log('1')}>Submit</ButtonComponent>
-        </DivComponent>
+        </div>
     );
 }
 

@@ -67,15 +67,6 @@ export const handleTextInputValidation = <CustomValidations = {}>(
     if (validation.custom) {
         return validation.custom(value);
     }
-    if (validation.custom) {
-        const customResult = validation.custom(value);
-        if (typeof customResult === "string" || customResult === null) {
-            return customResult;
-        } else {
-            console.error("Custom validation should return a string or null.");
-            return "An error occurred during validation."; // Generic error message.
-        }
-    }
 
 
     return null; // No validation errors

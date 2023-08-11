@@ -29,118 +29,53 @@ npm install questionnaire-library
 - **NUMBERINPUT**: Accepts a numeric input.
 - **BOOLEANINPUT**: Accepts a true or false response.
 
-## Components:
-
-- TextInput: For accepting text input.
-- SingleChoice: For single option selection.
-- NumericInput: For numeric input.
-- MultipleChoice: For multiple option selections.
-
-# Utilities:
-
-## Validation Handlers:
-
-- handleTextInputValidation: Validates text input based on the provided rules.
-- handleNumericInputValidation: Validates numeric input based on the provided rules.
-
-## Render Configuration:
-
-- setRenderConfig: Allows setting custom rendering configurations.
-- getRenderConfig: Retrieves the current render configuration.
-
-## Custom Components Configuration:
-
-- setCustomComponents: Allows setting custom components for specific questionnaire items.
-- getCustomComponents: Retrieves the current custom components configuration.
-
 # How to use
 
 ## 1. Define Your Questions
 
-Create an array of question objects:
+Using the predefined question types, define the set of questions for your questionnaire. Each question will have a type and optionally other attributes like options for choices or validation for input validation.
 
+Here's a sample question setup:
+```js 
+const questions = [
+    {
+        type: QuestionType.SINGLECHOICE,
+        question: 'Pick a color:',
+        options: ['Red', 'Green', 'Blue'],
+        onSelected: (answer: any) =>
+            console.log('Answer from SingleChoice: ', answer),
+    },
+];
+```
+
+## 2. Implement Validation (Optional)
+
+If you want to have input validations, the library provides built-in utilities for that purpose. You can use predefined validations or define custom validation logic.
+
+For instance:
 ```js 
 const questions = [
   {
     type: QuestionType.TEXTINPUT,
-    question: "What is your name?",
+    question: 'Pick a color:',
+    onSelected: (answer: any) =>
+            console.log('Answer from TextInput: ', answer),
+    validation: {
+      minLength: 2,
+      maxLength: 50
+    }
   },
-  {
-    type: QuestionType.SINGLECHOICE,
-    question: "Pick a fruit",
-    options: ["Apple", "Banana", "Cherry"],
-  },
-  // ... more questions
 ];
 ```
 
-## 2. Apply Custom Renderers (Optional)
-
-If you wish to customize how components render, define your custom rendering functions and set them:
-
-```js 
-const customRenderers = {
-  Input: (props, children) => <CustomInput {...props}>{children}</CustomInput>,
-  // ... other custom renderers
-};
-
-setRenderConfig(customRenderers);
-```
-
-## 3. Utilize Components in Your App
-
-Now, you can use the provided components to render your questions:
-
-```js 
-import { TextInput, SingleChoice } from 'path_to_questionnaire_library';
-
-function QuestionnaireComponent() {
-  // Implement your logic here
-  // Example:
-  return (
-          <div>
-            {questions.map(question => {
-              switch (question.type) {
-                case QuestionType.TEXTINPUT:
-                  return <TextInput {...question} />;
-                case QuestionType.SINGLECHOICE:
-                  return <SingleChoice {...question} />;
-                      // ... handle other question types
-              }
-            })}
-          </div>
-  );
-}
-```
-
-## 4. Implement Validation (Optional)
+## 3. Using the Questionnaire
 
 For inputs that require validation:
 
 ```js 
-const questionsWithValidation = [
-  {
-    type: QuestionType.TEXTINPUT,
-    question: "What is your email?",
-    validation: {
-      regex: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-    },
-  },
-  {
-    type: QuestionType.NUMERIINPUT,
-    question: "How old are you?",
-    validation: {
-      min: 1,
-      max: 130,
-      onlyPositiveNumbers: true,
-    },
-  },
-  // ... more questions
-];
+import {Questionnaire} from "../Questionnaire";
+...
+<Questionnaire questions={questions}/>
+...
 ```
-Then, the TextInput and NumericInput components will automatically validate the user's input and display relevant error messages based on the provided validation rules.
-
-# Notes
-- Remember to handle the **`onSelected`** callback to capture user input or selections.
-- For navigation within a questionnaire, utilize the **`goToNext`**, **`goToPrev`**, and **`renderNavButtons`** props where necessary.
-- To achieve maximum flexibility, you can provide custom components for different question types using the **`setCustomComponents`** function.
+Simply import the Questionnaire component and pass your questions array to it.

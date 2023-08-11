@@ -1,7 +1,5 @@
 import React, {FC} from 'react';
 import {Question} from "../types/types";
-import {getRenderConfig} from "../config";
-import {DefaultButton, DefaultDiv} from "./defaultRenderers";
 
 interface SingleChoiceProps extends Question {
     options?: string[];
@@ -9,12 +7,7 @@ interface SingleChoiceProps extends Question {
 }
 
 
-const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected}) => {
-    const renderers = getRenderConfig();
-    const ButtonComponent = renderers.Button || DefaultButton;
-    const DivComponent = renderers.Div || DefaultDiv;
-
-
+export const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected}) => {
     const handleOptionClick = (option: string) => {
         if (onSelected) {
             onSelected(option);
@@ -22,22 +15,22 @@ const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected}) =>
     };
 
     return (
-        <DivComponent>
+        <div>
             <p>{question}</p>
-            {options.map((option) => (
-                <ButtonComponent
+            {options?.map((option) => (
+                <button
                     key={option}
                     onClick={() => {
                         handleOptionClick(option);
                     }}
                 >
                     {option}
-                </ButtonComponent>
+                </button>
             ))}
-        </DivComponent>
+        </div>
     );
 }
-export default SingleChoice;
+
 // regex: "/{d+}",
 // minLength: 8.
 

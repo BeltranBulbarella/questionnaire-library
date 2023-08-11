@@ -1,4 +1,4 @@
-import {CustomComponents, RenderButton, RenderDiv, RenderInput, RenderLabel, RenderText} from "./types/types";
+import {CustomComponents} from "./types/types";
 
 
 let customComponents: CustomComponents = {};
@@ -12,11 +12,11 @@ export const getCustomComponents = (): CustomComponents => {
 }
 
 export interface RenderConfig {
-    Input?: RenderInput;
-    Button?: RenderButton;
-    Text?: RenderText;
-    Div?: RenderDiv;
-    Label?: RenderLabel;
+    // Input?: RenderInput;
+    // Button?: RenderButton;
+    // Text?: RenderText;
+    // Div?: RenderDiv;
+    // Label?: RenderLabel;
 
 }
 

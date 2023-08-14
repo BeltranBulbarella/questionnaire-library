@@ -52,7 +52,7 @@ const questions = [
 
 If you want to have input validations, the library provides built-in utilities for that purpose. You can use predefined validations or define custom validation logic.
 
-For instance:
+For instance with default validation:
 ```js 
 const questions = [
   {
@@ -63,6 +63,29 @@ const questions = [
     validation: {
       minLength: 2,
       maxLength: 50
+    }
+  },
+];
+```
+
+Example with custom validation: 
+
+```js 
+const questions = [
+  {
+    type: QuestionType.NUMBERINPUT,
+    question: 'Pick a color:',
+    onSelected: (answer: any) =>
+            console.log('Answer from NumberInput: ', answer),
+    validation: {
+      min: 1,
+      max: 150,
+      custom: (value: number) => {
+        if (value % 2 !== 0) {
+          return 'Please enter an even number.';
+        }
+        return null;
+      }
     }
   },
 ];

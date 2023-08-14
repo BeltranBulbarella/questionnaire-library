@@ -90,7 +90,28 @@ setCustomComponents({
 });
 ```
 
-## 4. Using the Questionnaire
+## 4. Use custom elements (Optional)
+
+In this library, you have the flexibility to use your own custom components, overriding the default ones, allowing for more customization to cater to various design or functionality needs.
+
+Use setCustomComponents to provide your own components.
+
+For instance:
+```js 
+const CustomInput = (props: any) => <input {...props} style={{border: '2px solid green'}}/>;
+const CustomButton = (props: any) => <button {...props} style={{backgroundColor: 'blue', color: 'white'}}/>;
+
+export const DemoCustomRenderComponents: React.FC = () => {
+    // Set custom renderers
+    setRenderConfig({
+        Input: CustomInput,
+        Button: CustomButton,
+        // ... others if needed
+    });
+}
+```
+
+## 5. Using the Questionnaire
 
 For inputs that require validation:
 

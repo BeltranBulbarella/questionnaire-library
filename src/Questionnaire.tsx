@@ -1,6 +1,6 @@
 import React from 'react';
 import {Question, QuestionType} from './types/types';
-import {getCustomComponents, setCustomComponents} from "./config";
+import {getCustomComponents} from "./config";
 import BooleanInput from "./components/BooleanInput";
 import {SingleChoice} from "./components/SingleChoice";
 import MultipleChoice from "./components/MultipleChoice";
@@ -47,7 +47,4 @@ export const Questionnaire: React.FC<Props> = ({questions}) => {
         </div>
     );
 }
-
-export {setCustomComponents, getCustomComponents};
-
 

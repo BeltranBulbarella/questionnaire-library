@@ -1,4 +1,5 @@
 import {CustomComponents} from "./types/types";
+import {FC} from "react";
 
 
 let customComponents: CustomComponents = {};
@@ -12,11 +13,11 @@ export const getCustomComponents = (): CustomComponents => {
 }
 
 export interface RenderConfig {
-    // Input?: RenderInput;
-    // Button?: RenderButton;
-    // Text?: RenderText;
-    // Div?: RenderDiv;
-    // Label?: RenderLabel;
+    Input?: FC<any>;
+    Button?: FC<any>;
+    Label?: FC<any>;
+    Div?: FC<any>;
+    Text?: FC<any>;
 
 }
 

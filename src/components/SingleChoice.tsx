@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
 import {Question} from "../types/types";
+import {getRenderConfig} from "../config";
 
 interface SingleChoiceProps extends Question {
     options?: string[];
@@ -8,6 +9,8 @@ interface SingleChoiceProps extends Question {
 
 
 export const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected}) => {
+    const { Button = "button", Text = "p", Div = "div" } = getRenderConfig();
+
     const handleOptionClick = (option: string) => {
         if (onSelected) {
             onSelected(option);
@@ -15,19 +18,19 @@ export const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelect
     };
 
     return (
-        <div>
-            <p>{question}</p>
+        <Div>
+            <Text>{question}</Text>
             {options?.map((option) => (
-                <button
+                <Button
                     key={option}
                     onClick={() => {
                         handleOptionClick(option);
                     }}
                 >
                     {option}
-                </button>
+                </Button>
             ))}
-        </div>
+        </Div>
     );
 }
 

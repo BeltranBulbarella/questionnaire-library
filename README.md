@@ -68,14 +68,36 @@ const questions = [
 ];
 ```
 
-## 3. Using the Questionnaire
+## 3. Use custom components (Optional)
+
+Using the library, you have the flexibility to either employ inline component logic or utilize your custom components. This provides a higher level of customization in terms of design and functionality for your specific needs.
+
+Use setCustomComponents to provide your own components.
+
+For instance:
+```js 
+setCustomComponents({
+  textInput: (props: Question) => {
+    return (
+            <div>
+              <p>{props.question}</p>
+              <input/>
+              <button>Submit</button>
+            </div>
+    );
+  },
+  multipleChoice: (props: Question) => <MultipleChoiceComponent type={props.type} question={props.question} options={props.options}/>
+});
+```
+
+## 4. Using the Questionnaire
 
 For inputs that require validation:
 
 ```js 
 import {Questionnaire} from "../Questionnaire";
-...
+
 <Questionnaire questions={questions}/>
-...
+
 ```
 Simply import the Questionnaire component and pass your questions array to it.

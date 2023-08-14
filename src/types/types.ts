@@ -20,9 +20,9 @@ export interface Question {
 }
 
 export interface CustomComponents {
-    singleChoice?: FC;
-    multipleChoice?: FC;
-    textInput?: FC;
-    numericInput?: FC;
-    booleanInput?: FC;
+    singleChoice?: FC<Question>;
+    multipleChoice?: FC<Question>;
+    textInput?: FC<Question>;
+    numericInput?: FC<Question>;
+    booleanInput?: FC<Question>;
 }

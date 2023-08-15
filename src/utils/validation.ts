@@ -8,6 +8,7 @@ export type NumericValidation<CustomValidations = CustomValidationMap> = CustomV
     onlyPositiveNumbers?: boolean;
     phoneNum?: boolean;
     isWholeNumber?: boolean;
+    custom?: (value: any) => string | null;
 };
 
 export const handleNumericInputValidation = <CustomValidations = {}>(
@@ -34,6 +35,10 @@ export const handleNumericInputValidation = <CustomValidations = {}>(
 
     if (validation.isWholeNumber && !Number.isInteger(value)) {
         return `Only whole numbers are allowed.`;
+    }
+
+    if (validation.custom) {
+        return validation.custom(value);
     }
 
     return null; // No validation errors

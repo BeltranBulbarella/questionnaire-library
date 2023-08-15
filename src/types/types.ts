@@ -14,7 +14,7 @@ export enum QuestionType {
 export interface Question {
     type: QuestionType;
     question: string;
-    onSelected?: (answer: any) => void;
+    onSelected?: (answer: any, isValid: boolean, handleNext: () => void, handlePrev: () => void) => void;
     options?: string[];
     validation?: NumericValidation | InputValidation;
 }
@@ -26,3 +26,4 @@ export interface CustomComponents {
     numericInput?: FC<Question>;
     booleanInput?: FC<Question>;
 }
+

@@ -1,6 +1,6 @@
-import {CustomComponents} from "./types/types";
-import {FC} from "react";
+import {FC} from 'react';
 
+import {CustomComponents} from "./types/types";
 
 let customComponents: CustomComponents = {};
 
@@ -18,7 +18,8 @@ export interface RenderConfig {
     Label?: FC<any>;
     Div?: FC<any>;
     Text?: FC<any>;
-
+    PrevButton?: FC<any>;
+    NextButton?: FC<any>;
 }
 
 let renderConfig: RenderConfig = {};
@@ -30,3 +31,4 @@ export const setRenderConfig = (config: RenderConfig) => {
 export const getRenderConfig = (): RenderConfig => {
     return renderConfig;
 }
+

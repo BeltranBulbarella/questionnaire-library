@@ -4,16 +4,18 @@ import {getRenderConfig} from "../config";
 
 interface SingleChoiceProps extends Question {
     options?: string[];
+    preSelectedAnswer?: any;
+    handleNext: () => void;
+    handlePrev: () => void;
 
 }
 
-
-export const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelected}) => {
+export const SingleChoice: FC<SingleChoiceProps> = ({ question, options, onSelected, preSelectedAnswer, handleNext, handlePrev }) => {
     const { Button = "button", Text = "p", Div = "div" } = getRenderConfig();
 
     const handleOptionClick = (option: string) => {
         if (onSelected) {
-            onSelected(option);
+            onSelected(option, true, handleNext, handlePrev);
         }
     };
 
@@ -26,7 +28,7 @@ export const SingleChoice: FC<SingleChoiceProps> = ({question, options, onSelect
                     onClick={() => {
                         handleOptionClick(option);
                     }}
-                >
+                    style={{ backgroundColor: option === preSelectedAnswer ? 'lightblue' : undefined }}>
                     {option}
                 </Button>
             ))}

@@ -29,6 +29,73 @@ npm install questionnaire-library
 - **NUMBERINPUT**: Accepts a numeric input.
 - **BOOLEANINPUT**: Accepts a true or false response.
 
+## Interfaces and Enums
+
+### `QuestionType` Enum
+
+```js
+export enum QuestionType {
+  SINGLECHOICE = 'SINGLECHOICE',
+  MULTIPLECHOICE = 'MULTIPLECHOICE',
+  TEXTINPUT = 'TEXTINPUT',
+  NUMBERINPUT = 'NUMBERINPUT',
+  BOOLEANINPUT = 'BOOLEANINPUT',
+}
+```
+
+### `Question` Interface
+
+```js
+export interface Question {
+  type: QuestionType;
+  question: string;
+  onSelected?: (answer: any, isValid: boolean, handleNext: () => void, handlePrev: () => void) => void;
+  options?: string[];
+  validation?: NumericValidation | InputValidation;
+}
+```
+
+### `QuestionnaireProps` Interface
+```js
+interface QuestionnaireProps {
+    questions: Question[];
+    navButtons?: boolean;
+}
+```
+
+### `RenderConfig` Interface
+```js
+export interface RenderConfig {
+  Input?: FC<any>;
+  Button?: FC<any>;
+  Label?: FC<any>;
+  Div?: FC<any>;
+  Text?: FC<any>;
+  PrevButton?: FC<any>;
+  NextButton?: FC<any>;
+}
+```
+
+### Validation Types
+```js
+export type NumericValidation<CustomValidations = CustomValidationMap> = CustomValidations & {
+  max?: number;
+  min?: number;
+  onlyPositiveNumbers?: boolean;
+  phoneNum?: boolean;
+  isWholeNumber?: boolean;
+  custom?: (value: any) => string | null;
+};
+
+export type InputValidation<CustomValidations = CustomValidationMap> = CustomValidations & {
+  minLength?: number;
+  maxLength?: number;
+  regex?: RegExp;
+  custom?: (value: any) => string | null;
+}
+```
+
+
 # How to use
 
 ## 1. Define Your Questions
@@ -136,7 +203,10 @@ export const DemoCustomRenderComponents: React.FC = () => {
 
 ## 5. Using the Questionnaire
 
-For inputs that require validation:
+To utilize the Questionnaire component, you have two primary methods:
+
+### 1. Direct Rendering
+For standard inputs without the need for manual navigation:
 
 ```js 
 import {Questionnaire} from "../Questionnaire";
@@ -145,3 +215,42 @@ import {Questionnaire} from "../Questionnaire";
 
 ```
 Simply import the Questionnaire component and pass your questions array to it.
+
+### 2. Custom Navigation with onSelected Callback
+
+For scenarios where you want to control the flow based on user's input or other conditions, you can utilize the `handleNext()` and `handlePrev()` functions provided by the `onSelected` callback.
+
+```js
+const questions = [
+  {
+    type: QuestionType.SINGLECHOICE,
+    question: 'Pick a color:',
+    options: ['Red', 'Green', 'Blue'],
+    onSelected: (answer: any, isValid: boolean, handleNext: () => void, handlePrev: () => void) => {
+      console.log('Answer from SingleChoice: ', answer);
+      if (isValid && answer === 'Green') {
+        handleNext();  // Move to the next question if the answer is "Green" and valid
+      } else if (isValid) {
+        alert('Please choose Green.');
+      } else {
+        alert('Please provide a valid answer.');
+      }
+    }
+  }
+]
+```
+
+### 3. Optional Navigation Buttons
+
+If you want to provide users with a direct way to navigate between questions without relying on the logic within the `onSelected` callback, you can use the optional `navButtons` prop.
+This buttons can be customized using the `setRenderConfig` function.
+
+```js
+<Questionnaire questions={questions} navButtons/>
+```
+
+
+When you pass the `navButtons` prop, the component will render "Prev" and "Next" buttons, allowing users to move between questions easily.
+
+Remember, while the `navButtons` offer manual navigation, you can still combine it with custom logic from the `onSelected` callback for a hybrid approach.
+

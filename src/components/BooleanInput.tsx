@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {Question} from "../types/types";
 import {getRenderConfig} from "../config";
+import {buttonStyle, selectedButtonStyle} from "../styles/CommonComponentStyles";
 
 interface BooleanInputProps extends Question {
     preSelectedAnswer?: any;
@@ -9,7 +10,7 @@ interface BooleanInputProps extends Question {
 }
 
 const BooleanInput: FC<BooleanInputProps> = ({question, onSelected, preSelectedAnswer, handleNext, handlePrev}) => {
-    const { Button = "button",  Div = "div" } = getRenderConfig();
+    const { Button = "button",  Div = "div" , Text= 'p'} = getRenderConfig();
     const options = ['True', 'False'];
 
     const handleOptionClick = (option: string) => {
@@ -19,22 +20,20 @@ const BooleanInput: FC<BooleanInputProps> = ({question, onSelected, preSelectedA
     };
 
     return (
-        <Div>
-            {question}
+        <Div style={{ padding: '20px' }}>
+            <Text style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '15px' }}>{question}</Text>
             {options?.map((option) => (
                 <Button
                     key={option}
-                    onClick={() => {
-                        handleOptionClick(option);
-                    }}
-                    style={{ backgroundColor: option === preSelectedAnswer ? 'lightblue' : undefined }}>
+                    onClick={() => handleOptionClick(option)}
+                    style={option === preSelectedAnswer ? selectedButtonStyle : buttonStyle}>
                     {option}
                 </Button>
             ))}
-
         </Div>
     );
 }
 
 export default BooleanInput;
+
 

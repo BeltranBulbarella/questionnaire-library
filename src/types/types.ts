@@ -9,6 +9,7 @@ export enum QuestionType {
     TEXTINPUT = 'TEXTINPUT',
     NUMBERINPUT = 'NUMBERINPUT',
     BOOLEANINPUT = 'BOOLEANINPUT',
+    SLIDER = 'SLIDER',
 }
 
 export interface Question {
@@ -25,5 +26,5 @@ export interface CustomComponents {
     textInput?: FC<Question>;
     numericInput?: FC<Question>;
     booleanInput?: FC<Question>;
+    statusBar?: FC<any>;
 }
-

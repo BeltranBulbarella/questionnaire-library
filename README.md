@@ -60,6 +60,9 @@ export interface Question {
 interface QuestionnaireProps {
     questions: Question[];
     navButtons?: boolean;
+    statusBar?: boolean;
+    savedAnswers?: any[]; 
+    onAnswersUpdate?: (answers: any[]) => void; 
 }
 ```
 
@@ -73,6 +76,10 @@ export interface RenderConfig {
   Text?: FC<any>;
   PrevButton?: FC<any>;
   NextButton?: FC<any>;
+  ErrorText?: FC<any>;
+  StatusBarContainer?: FC<any>;
+  ProgressBar?: FC<any>;
+  StatusText?: FC<any>;
 }
 ```
 
@@ -205,13 +212,14 @@ export const DemoCustomRenderComponents: React.FC = () => {
 
 To utilize the Questionnaire component, you have two primary methods:
 
+
 ### 1. Direct Rendering
 For standard inputs without the need for manual navigation:
 
 ```js 
 import {Questionnaire} from "../Questionnaire";
 
-<Questionnaire questions={questions}/>
+<Questionnaire questions={questions} />
 
 ```
 Simply import the Questionnaire component and pass your questions array to it.
@@ -253,4 +261,43 @@ This buttons can be customized using the `setRenderConfig` function.
 When you pass the `navButtons` prop, the component will render "Prev" and "Next" buttons, allowing users to move between questions easily.
 
 Remember, while the `navButtons` offer manual navigation, you can still combine it with custom logic from the `onSelected` callback for a hybrid approach.
+
+### 4. Optional Status Bar
+
+The Questionnaire also offers an optional status bar, which visually informs users about their progress. This status bar can be customized, or you can choose to use your own.
+
+To use the default status bar:
+
+```js
+<Questionnaire questions={questions} statusBar/>
+```
+
+If you wish to customize the status bar, the following props can be set when using the setRenderConfig function:
+
+StatusBarContainer: Customize the container holding the status bar elements.
+
+ProgressBar: Use your own progress bar component.
+
+StatusText: Provide a custom component to display the status text (like "Question 3 of 5").
+For example:
+
+```js
+const CustomStatusBarContainer = (props: any) => <div {...props} style={{border: '2px solid green'}}/>;
+const CustomProgressBar = (props: any) => <div {...props} style={{backgroundColor: 'blue', color: 'white'}}/>;
+const CustomStatusText = (props: any) => <div {...props} style={{color: 'red'}}/>;
+
+setRenderConfig({
+    StatusBarContainer: CustomStatusBarContainer,
+    ProgressBar: CustomProgressBar,
+    StatusText: CustomStatusText,
+});
+```
+
+If you wish to use your own custom status bar, you can use the `setCustomComponents` function to provide your own custom components.
+
+```js
+setCustomComponents({
+  statusBar: (props: any) => <CustomStatusBar {...props} />
+});
+```
 

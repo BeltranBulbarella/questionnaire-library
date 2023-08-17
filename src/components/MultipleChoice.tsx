@@ -1,6 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
-import { Question } from "../types/types";
+import {Question} from "../types/types";
 import {getRenderConfig} from "../config";
+import {buttonStyle, selectedButtonStyle} from "../styles/CommonComponentStyles";
 
 interface MultipleChoiceProps extends Question {
     options?: string[];
@@ -9,8 +10,15 @@ interface MultipleChoiceProps extends Question {
     handlePrev: () => void;
 }
 
-const MultipleChoice: FC<MultipleChoiceProps> = ({question, options, onSelected, preSelectedAnswer, handleNext, handlePrev}) => {
-    const { Button = "button", Div = "div" } = getRenderConfig();
+const MultipleChoice: FC<MultipleChoiceProps> = ({
+                                                     question,
+                                                     options,
+                                                     onSelected,
+                                                     preSelectedAnswer,
+                                                     handleNext,
+                                                     handlePrev
+                                                 }) => {
+    const {Button = "button", Div = "div", Text = 'p'} = getRenderConfig();
 
     const [selectedOptions, setSelectedOptions] = useState<string[]>(preSelectedAnswer ?? []);
 
@@ -35,13 +43,13 @@ const MultipleChoice: FC<MultipleChoiceProps> = ({question, options, onSelected,
     };
 
     return (
-        <Div>
-            {question}
+        <Div style={{padding: '20px'}}>
+            <Text style={{fontWeight: 'bold', fontSize: '18px', marginBottom: '15px'}}>{question}</Text>
             {options?.map((option) => (
                 <Button
                     key={option}
                     onClick={() => handleOptionToggle(option)}
-                    style={{ backgroundColor: selectedOptions.includes(option) ? 'lightblue' : undefined }}>
+                    style={selectedOptions.includes(option) ? selectedButtonStyle : buttonStyle}>
                     {option}
                 </Button>
             ))}

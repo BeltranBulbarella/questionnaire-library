@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Question} from "../types/types";
 import {handleTextInputValidation, InputValidation} from "../utils/validation";
 import {getRenderConfig} from "../config";
+import {buttonStyle, containerStyle, errorMessageStyle, inputStyle, labelStyle} from "../styles/CommonComponentStyles";
 
 export interface TextInputProps<CustomValidations = {}> extends Question {
     validation?: InputValidation<CustomValidations>;
@@ -11,7 +12,7 @@ export interface TextInputProps<CustomValidations = {}> extends Question {
 }
 
 const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation, preSelectedAnswer, handleNext, handlePrev}) => {
-    const { Input = "input", Button = "button", Label = "label", Text = "p", Div = "div" } = getRenderConfig();
+    const { Input = "input", Button = "button", Label = "label", Text = "p", Div = "div", ErrorText = 'p'} = getRenderConfig();
 
     const [value, setValue] = useState(preSelectedAnswer ?? '');
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -38,14 +39,12 @@ const TextInput: React.FC<TextInputProps> = ({question, onSelected, validation, 
         }
     }, []);
 
-
-
     return (
-        <Div>
-            <Label><Text>{question}</Text></Label>
-            <Input type="text" value={value} onChange={handleInputChange} />
-            <Button onClick={() => console.log('submit')} disabled={value === ''}>Submit</Button>
-            {errorMessage && <Text style={{ color: 'red' }}>{errorMessage}</Text>}
+        <Div style={{...containerStyle, flexDirection: 'column'}}>
+            <Label style={labelStyle}><Text>{question}</Text></Label>
+            <Input type="text" value={value} onChange={handleInputChange} style={inputStyle} />
+            <Button onClick={() => console.log('submit')} disabled={value === ''} style={buttonStyle}>Submit</Button>
+            {errorMessage && <ErrorText style={errorMessageStyle}>{errorMessage}</ErrorText>}
         </Div>
     );
 }

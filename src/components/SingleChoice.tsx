@@ -1,6 +1,7 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import {Question} from "../types/types";
 import {getRenderConfig} from "../config";
+import {buttonStyle} from "../styles/CommonComponentStyles";
 
 interface SingleChoiceProps extends Question {
     options?: string[];
@@ -10,8 +11,15 @@ interface SingleChoiceProps extends Question {
 
 }
 
-export const SingleChoice: FC<SingleChoiceProps> = ({ question, options, onSelected, preSelectedAnswer, handleNext, handlePrev }) => {
-    const { Button = "button", Text = "p", Div = "div" } = getRenderConfig();
+export const SingleChoice: FC<SingleChoiceProps> = ({
+                                                        question,
+                                                        options,
+                                                        onSelected,
+                                                        preSelectedAnswer,
+                                                        handleNext,
+                                                        handlePrev
+                                                    }) => {
+    const {Button = "button", Text = "p", Div = "div"} = getRenderConfig();
 
     const handleOptionClick = (option: string) => {
         if (onSelected) {
@@ -19,46 +27,30 @@ export const SingleChoice: FC<SingleChoiceProps> = ({ question, options, onSelec
         }
     };
 
+    useEffect(() => {
+        if (preSelectedAnswer) {
+            handleOptionClick(preSelectedAnswer)
+        }
+    }, []);
+
+    const selectedButtonStyle = {
+        ...buttonStyle,
+        backgroundColor: 'lightblue'
+    };
+
     return (
-        <Div>
-            <Text>{question}</Text>
+        <Div style={{padding: '20px'}}>
+            <Text style={{fontWeight: 'bold', fontSize: '18px', marginBottom: '15px'}}>{question}</Text>
             {options?.map((option) => (
                 <Button
                     key={option}
                     onClick={() => {
                         handleOptionClick(option);
                     }}
-                    style={{ backgroundColor: option === preSelectedAnswer ? 'lightblue' : undefined }}>
+                    style={option === preSelectedAnswer ? selectedButtonStyle : buttonStyle}>
                     {option}
                 </Button>
             ))}
         </Div>
     );
 }
-
-// regex: "/{d+}",
-// minLength: 8.
-
-
-// const singleChoice = useSingleChoice({
-//     initialValue: ,
-//     options: [],
-//     onChange: (answer) => console.log(answer),
-//     // ... mil cosas mas como blur, focus, validatio
-// });
-
-// const form = useForm({
-//   schema: {
-//     color: {
-//         question: "Which color do you like?",
-//         options: ["Red", "Blue", "Green"]
-//     },
-//     name: {
-//         question: "Describe your favorite book"
-//     },
-//   },
-//     onSubmit: (values) => console.log(values),
-// })// <div>
-//         //     <select value={form.color.value} onSelect={form.color.onChange} options={form.colo.options}/>
-//         //     <input label={form.name.question} />
-//         // </div>

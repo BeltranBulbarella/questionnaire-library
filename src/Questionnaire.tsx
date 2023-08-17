@@ -1,26 +1,47 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Question, QuestionType} from './types/types';
 import {getCustomComponents, getRenderConfig} from "./config";
 import BooleanInput from "./components/BooleanInput";
 import {SingleChoice} from "./components/SingleChoice";
 import MultipleChoice from "./components/MultipleChoice";
-import TextInput, {TextInputProps} from "./components/TextInput";
+import TextInput from "./components/TextInput";
 import NumericInput from "./components/NumericInput";
+import {StatusBar} from "./components/StatusBar";
 
 interface QuestionnaireProps {
     questions: Question[];
     navButtons?: boolean;
+    statusBar?: boolean;
+    savedAnswers?: any[];  // this is where you will get the saved answers
+    onAnswersUpdate?: (answers: any[]) => void;  // this will send the answers back to the user
 }
 
-export const Questionnaire: React.FC<QuestionnaireProps> = ({questions, navButtons}) => {
-    const {PrevButton = "button", NextButton = 'button'} = getRenderConfig();
+type ComponentMapType = {
+    [key in QuestionType]?: React.FC<any>;  // The `any` type here is a generic placeholder. It would be better to replace it with a more specific type if possible.
+};
+
+export const Questionnaire: React.FC<QuestionnaireProps> = ({
+                                                                questions,
+                                                                navButtons,
+                                                                savedAnswers,
+                                                                onAnswersUpdate,
+                                                                statusBar
+                                                            }) => {
+    const {PrevButton = "button", NextButton = 'button', Div = 'div'} = getRenderConfig();
 
     const customComponents = getCustomComponents();
 
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
     const currentQuestion = questions[currentQuestionIndex];
-    const [answers, setAnswers] = useState<any[]>([]);
+    const [answers, setAnswers] = useState<any[]>(savedAnswers || []);
     const [isValid, setIsValid] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (onAnswersUpdate) {
+            onAnswersUpdate(answers);
+        }
+    }, [answers, onAnswersUpdate]);
+
 
     const handleNext = () => {
         if (currentQuestionIndex < questions.length - 1) {
@@ -51,54 +72,48 @@ export const Questionnaire: React.FC<QuestionnaireProps> = ({questions, navButto
             return true;
         }
         return !isValid;
+    };
 
+    const isPrevButtonDisabled = () => {
+        return currentQuestionIndex === 0;
+    }
+
+    const componentMap: ComponentMapType = {
+        [QuestionType.SINGLECHOICE]: customComponents.singleChoice || SingleChoice,
+        [QuestionType.MULTIPLECHOICE]: customComponents.multipleChoice || MultipleChoice,
+        [QuestionType.TEXTINPUT]: customComponents.textInput || TextInput,
+        [QuestionType.NUMBERINPUT]: customComponents.numericInput || NumericInput,
+        [QuestionType.BOOLEANINPUT]: customComponents.booleanInput || BooleanInput,
     };
 
     return (
-        <div>
+        <Div>
             {(() => {
+                const Component = componentMap[currentQuestion.type];
+                if (!Component) return null;
+
                 const commonProps = {
                     ...currentQuestion,
                     onSelected: (answer: any, isValid: boolean) => handleAnswerSelected(answer, isValid, handleNext, handlePrev),
                     preSelectedAnswer: answers[currentQuestionIndex],
+                    handleNext: handleNext,
+                    handlePrev: handlePrev
                 };
-                switch (currentQuestion.type) {
-                    case QuestionType.SINGLECHOICE:
-                        const SingleChoiceComponent = customComponents.singleChoice || SingleChoice;
-                        return <SingleChoiceComponent {...commonProps} />;
 
-                    case QuestionType.MULTIPLECHOICE:
-                        const MultipleChoiceComponent = customComponents.multipleChoice || MultipleChoice;
-                        return <MultipleChoiceComponent {...commonProps}  />;
-
-                    case QuestionType.TEXTINPUT:
-                        const TextInputComponent = customComponents.textInput || TextInput;
-                        if (currentQuestion.type === QuestionType.TEXTINPUT) {
-                            return <TextInputComponent {...commonProps as unknown as TextInputProps}  />;
-                        }
-                        break;
-
-                    case QuestionType.NUMBERINPUT:
-                        const NumericInputComponent = customComponents.numericInput || NumericInput;
-                        return <NumericInputComponent {...commonProps}  />;
-
-                    case QuestionType.BOOLEANINPUT:
-                        const BooleanInputComponent = customComponents.booleanInput || BooleanInput;
-                        return <BooleanInputComponent {...commonProps}  />;
-
-                    default:
-                        return null;
-                }
+                return <Component {...commonProps} />;
             })()}
 
             {navButtons &&
                 <>
-                    <PrevButton onClick={handlePrev} disabled={currentQuestionIndex === 0}>Prev</PrevButton>
+                    <PrevButton onClick={handlePrev} disabled={isPrevButtonDisabled()}>Prev</PrevButton>
                     <NextButton onClick={handleNext} disabled={isNextButtonDisabled()}>Next</NextButton>
                 </>
             }
-        </div>
+            {statusBar &&
+                (customComponents.statusBar
+                    ? <customComponents.statusBar/>
+                    : <StatusBar current={currentQuestionIndex} total={questions.length}/>)
+            }
+        </Div>
     );
 }
-
-

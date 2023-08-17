@@ -2,6 +2,7 @@ import React, {ChangeEvent, FC, useEffect, useState} from 'react';
 import {Question} from "../types/types";
 import {handleNumericInputValidation, NumericValidation} from "../utils/validation";
 import {getRenderConfig} from "../config";
+import {buttonStyle, errorMessageStyle, inputStyle} from "../styles/CommonComponentStyles";
 
 interface NumericInputProps extends Question {
     validation?: NumericValidation;
@@ -11,7 +12,7 @@ interface NumericInputProps extends Question {
 }
 
 const NumericInput: FC<NumericInputProps> = ({question, onSelected, validation, preSelectedAnswer, handleNext, handlePrev}) => {
-    const {Input = "input", Button = "button", Label = "label", Text = "p", Div = "div"} = getRenderConfig();
+    const {Input = "input", Button = "button", Label = "label", Text = "p", Div = "div", ErrorText = 'p'} = getRenderConfig();
 
     const [value, setValue] = useState<number | null>(preSelectedAnswer ?? null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -43,11 +44,11 @@ const NumericInput: FC<NumericInputProps> = ({question, onSelected, validation, 
 
 
     return (
-        <Div>
-            <Label><Text>{question}</Text></Label>
-            <Input type="number" value={value ?? ''} onChange={handleInputChange}/>
-            <Button onClick={() => console.log('submit')} disabled={value === null}>Submit</Button>
-            {errorMessage && <Text style={{color: 'red'}}>{errorMessage}</Text>}
+        <Div style={{ padding: '20px' }}>
+            <Label style={{ fontWeight: 'bold', fontSize: '18px', marginBottom: '10px' }}><Text>{question}</Text></Label>
+            <Input type="number" value={value ?? ''} onChange={handleInputChange} style={inputStyle}/>
+            <Button onClick={() => console.log('submit')} disabled={value === null} style={buttonStyle}>Submit</Button>
+            {errorMessage && <ErrorText style={errorMessageStyle}>{errorMessage}</ErrorText>}
         </Div>
     );
 }

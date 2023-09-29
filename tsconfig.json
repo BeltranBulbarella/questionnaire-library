@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
+    "declaration": true,
+    "rootDir": "./src",
     "outDir": "dist",
     "module": "ESNext",
     "lib": ["dom", "esnext"],
     "sourceMap": true,
-    "declaration": true,
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "esModuleInterop": true
